@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CKG Auto Input v0.28</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: satu kolom catatan rilis; tiap versi satu blok, contoh isian sel Excel memakai huruf mono seperti di spreadsheet. */
+:root{
+  --bg:#f3f7f4; --surface:#ffffff; --fg:#173a31; --muted:#5d746c; --line:#d8e5de;
+  --accent:#087654; --accent-soft:#e0f2e9; --warn:#8a5d05; --warn-soft:#fff2d6; --bad:#a3452f; --bad-soft:#fbe8e2;
+  --cell:#f7faf8;
+  --display:"Plus Jakarta Sans",Aptos,"Segoe UI",system-ui,sans-serif;
+  --body:"Plus Jakarta Sans",Aptos,"Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",Consolas,"Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1c18; --surface:#152722; --fg:#e3f1eb; --muted:#9db5ac; --line:#284139;
+  --accent:#4cc79a; --accent-soft:#183a2f; --warn:#f0c46a; --warn-soft:#3a2f17; --bad:#f19a83; --bad-soft:#3b2019;
+  --cell:#1b302a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1c18; --surface:#152722; --fg:#e3f1eb; --muted:#9db5ac; --line:#284139;
+  --accent:#4cc79a; --accent-soft:#183a2f; --warn:#f0c46a; --warn-soft:#3a2f17; --bad:#f19a83; --bad-soft:#3b2019;
+  --cell:#1b302a; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 var(--body);padding-inline:16px;padding-block:40px 64px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+header{display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font:800 clamp(28px,5vw,38px)/1.12 var(--display);margin:0;text-wrap:balance}
+.lede{margin:0;color:var(--muted);max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px;font-size:12px}
+.meta span{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:3px 10px;color:var(--muted)}
+section.release{display:flex;flex-direction:column;gap:18px;border-top:2px solid var(--fg);padding-top:18px}
+.rel-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.ver{font:800 13px var(--mono);color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:2px 8px}
+h2{font:800 22px/1.25 var(--display);margin:0;text-wrap:balance}
+h3{font:700 15px var(--display);margin:0}
+p{margin:0;max-width:66ch}
+.block{display:flex;flex-direction:column;gap:10px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:66ch}
+code,.c{font:13px var(--mono);background:var(--cell);border:1px solid var(--line);border-radius:4px;padding:1px 5px;white-space:nowrap}
+.table-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--cell)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td .c{display:inline-block;margin:2px 2px 2px 0}
+.ok,.no{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.ok{background:var(--accent-soft);color:var(--accent)}
+.no{background:var(--bad-soft);color:var(--bad)}
+.callout{background:var(--warn-soft);color:var(--fg);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.callout strong{color:var(--warn)}
+.steps{counter-reset:s;list-style:none;padding:0;gap:10px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--surface);font:700 13px var(--display)}
+.btnlike{font:700 12px var(--body);border:1px solid var(--warn);color:var(--warn);border-radius:99px;padding:1px 9px;white-space:nowrap}
+footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Catatan rilis · CKG Sekolah Auto Input</span>
+    <h1>Copas langsung ke template, dan tombol muat ulang ekstensi</h1>
+    <p class="lede">Dua pembaruan untuk operator: template Excel sekarang boleh diisi dengan copas dari file lain, dan panel punya tombol untuk menyambung ulang ke halaman CKG bila statusnya macet di "Halaman belum siap".</p>
+    <div class="meta"><span>v0.28.0 &amp; v0.28.1</span><span>6 Oktober 2026</span><span>Belum diuji dengan file copas asli operator</span></div>
+  </header>
+
+  <section class="release" id="v0-28-0">
+    <div class="rel-head"><span class="ver">v0.28.0</span><h2>Copas langsung ke template</h2></div>
+
+    <div class="block">
+      <h3>Masalahnya</h3>
+      <p>Template sudah berformat Teks, tetapi saat menempel (Ctrl+V) dari file Excel lain, format sel ikut tertimpa. Akibatnya tanggal lahir, NIK, dan nomor WhatsApp terbaca dalam bentuk lain dan baris ditolak. File Excel biasa tidak bisa mengunci format saat copas.</p>
+    </div>
+
+    <div class="block">
+      <h3>Yang berubah</h3>
+      <p>Template tidak dikunci. Ekstensi yang menyesuaikan format saat file diunggah. Kolom template tidak berubah, jadi file lama tetap bisa dipakai. Berlaku untuk template CKG Sekolah, CKG Umum, Konfirmasi Hadir, dan Input Pemeriksaan.</p>
+    </div>
+
+    <div class="block">
+      <h3>Isian yang sekarang diterima</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Kolom</th><th>Contoh isian hasil copas</th><th>Hasil</th></tr></thead>
+          <tbody>
+            <tr><td>Tanggal lahir siswa &amp; wali</td><td><span class="c">balikpapan,26-01-1992</span><span class="c">Balikpapan, 26/01/1992</span><span class="c">Kota Baru, 26 Jan 1992</span></td><td><span class="ok">Diambil tanggalnya saja</span></td></tr>
+            <tr><td></td><td><span class="c">26-01-1992</span><span class="c">26.01.1992</span><span class="c">26/1/92</span><span class="c">8-Mar-2019</span><span class="c">26 Januari 1992</span>, sel bertipe tanggal Excel, angka seri <span class="c">33629</span></td><td><span class="ok">Terbaca</span></td></tr>
+            <tr><td></td><td><span class="c">01/26/1992</span> (format Amerika)</td><td><span class="ok">Dibalik otomatis</span></td></tr>
+            <tr><td>NIK</td><td><span class="c">'6471…</span>, spasi, titik, strip, spasi tersembunyi</td><td><span class="ok">Dibersihkan</span></td></tr>
+            <tr><td>WhatsApp</td><td><span class="c">81234567890</span><span class="c">0812-3456-7890</span><span class="c">+62 812…</span></td><td><span class="ok">Terbaca</span></td></tr>
+            <tr><td>Jenis kelamin</td><td><span class="c">LAKI-LAKI</span><span class="c">L.</span><span class="c">laki2</span><span class="c">Pr.</span><span class="c">WANITA</span></td><td><span class="ok">Dikenali</span></td></tr>
+            <tr><td>Semua teks</td><td>Spasi tersembunyi dari hasil salin web atau Word</td><td><span class="ok">Dibuang</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul>
+        <li>Bila tanggal lahir diambil dari teks berisi tempat lahir, panel mencatat <em>"berisi teks tambahan; yang dipakai 26/01/1992"</em> supaya bisa dicek. Bila barisnya banyak, 5 ditampilkan dan sisanya diringkas.</li>
+        <li>Tanggal seperti <span class="c">03/08/2019</span> tetap dibaca hari/bulan (3 Agustus 2019), sesuai format Indonesia.</li>
+        <li>Tempat lahir tidak dipakai dan tidak disimpan.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>Yang tetap ditolak, dengan alasan yang jelas</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Isian</th><th>Pesan di panel</th></tr></thead>
+          <tbody>
+            <tr><td><span class="c">26-01-1992 / 27-01-1992</span></td><td><span class="no">Ditolak</span> memuat lebih dari satu tanggal; isi salah satu saja</td></tr>
+            <tr><td><span class="c">Balikpapan</span></td><td><span class="no">Ditolak</span> tidak memuat tanggal</td></tr>
+            <tr><td>NIK tampil sebagai angka, mis. <span class="c">6,47E+15</span></td><td><span class="no">Ditolak</span> digit terakhir NIK sudah hilang di file sumber</td></tr>
+            <tr><td>WhatsApp tampil sebagai <span class="c">8.12346E+10</span></td><td><span class="no">Ditolak</span> digit nomor sudah terpotong</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <strong>Kenapa NIK berbentuk angka ditolak?</strong>
+        <p>Excel hanya menyimpan 15 digit angka. NIK 16 digit yang di file sumber sudah tersimpan sebagai angka kehilangan digit terakhirnya. Ekstensi tidak menebak, karena NIK yang salah satu digit bisa mendaftarkan orang lain. Perbaikannya: ubah kolom NIK di file sumber menjadi Teks, ketik ulang NIK-nya, lalu salin lagi.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="release" id="v0-28-1">
+    <div class="rel-head"><span class="ver">v0.28.1</span><h2>Panel tidak lagi macet di "Halaman belum siap"</h2></div>
+
+    <div class="block">
+      <h3>Masalahnya</h3>
+      <p>Operator sudah berada di CKG Sekolah → Cari/Daftarkan Individu, tetapi panel tetap menampilkan "Halaman belum siap". Ini terjadi bila ekstensi diperbarui sementara tab CKG belum di-refresh, sehingga sambungan ekstensi ke halaman terputus.</p>
+    </div>
+
+    <div class="block">
+      <h3>Yang berubah</h3>
+      <ul>
+        <li>Bila sambungan terputus, panel kini menulis: <em>"Ekstensi belum terhubung ke halaman ini. Refresh tab CKG (tekan F5), lalu tunggu sampai tabel tampil."</em></li>
+        <li>Build debug menyambung ulang sendiri ke tab CKG tanpa perlu refresh.</li>
+        <li>Mode Konfirmasi Hadir tidak lagi menyuruh "unduh template lalu upload file". Pesannya sekarang: <em>"Pilih Sekolah dan Kelas di website, lalu tekan MULAI."</em></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>Tombol muat ulang ekstensi</h3>
+      <p>Tombol <span class="btnlike">Muat ulang ekstensi</span> muncul di bawah status saat halaman belum siap, dan tombol <span class="btnlike">Muat ulang</span> selalu ada di bagian bawah panel.</p>
+      <ol class="steps">
+        <li><span>Tekan tombolnya, lalu baca dan setujui konfirmasi yang muncul.</span></li>
+        <li><span>Ekstensi dimuat ulang, lalu semua tab CKG di-refresh otomatis.</span></li>
+        <li><span>Panel ikut tertutup. Setelah halaman CKG tampil, buka lagi lewat ikon ekstensi.</span></li>
+      </ol>
+      <ul>
+        <li>Tombol ditolak saat proses pendaftaran atau konfirmasi sedang berjalan, atau Input Pemeriksaan sedang mengisi. Tekan JEDA atau STOP lebih dulu.</li>
+        <li>Progres sesi tetap tersimpan. Isian formulir di tab CKG yang belum disimpan akan hilang, dan file yang sudah diunggah tetapi belum dimulai perlu diunggah lagi.</li>
+        <li>Tidak ada izin baru yang diminta.</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <strong>Pertama kali memasang v0.28.1</strong>
+      <p>Versi lama belum punya tombol ini. Buka <code>chrome://extensions</code>, tekan Reload pada CKG Sekolah Auto Input, lalu tekan F5 di tab CKG. Sesudah itu tombolnya bisa dipakai.</p>
+    </div>
+  </section>
+
+  <footer>Paket rilis: <code>ckg-sekolah-auto-input-v0.28.1.zip</code>. Semua pengujian memakai data tiruan.</footer>
+</div>
+</body>
+</html>
