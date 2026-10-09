@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CKG Auto Input v0.28</title>
+<title>CKG Auto Input v0.30</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -65,10 +65,62 @@ footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);paddin
 <div class="wrap">
   <header>
     <span class="eyebrow">Catatan rilis · CKG Sekolah Auto Input</span>
-    <h1>Copas langsung ke template, dan tombol muat ulang ekstensi</h1>
-    <p class="lede">Dua pembaruan untuk operator: template Excel sekarang boleh diisi dengan copas dari file lain, dan panel punya tombol untuk menyambung ulang ke halaman CKG bila statusnya macet di "Halaman belum siap".</p>
-    <div class="meta"><span>v0.28.0 &amp; v0.28.1</span><span>6 Oktober 2026</span><span>Belum diuji dengan file copas asli operator</span></div>
+    <h1>Input Pemeriksaan CKG Sekolah, dan login dengan email</h1>
+    <p class="lede">Versi terbaru menambah menu Input Pemeriksaan untuk CKG Sekolah: hasil pemeriksaan dari Excel diisikan ke formulir layanan sampai layanan diselesaikan. Langganan kini dipakai dengan login email pembelian.</p>
+    <div class="meta"><span>v0.28.0 – v0.30.0</span><span>Terakhir diperbarui 9 Oktober 2026</span></div>
   </header>
+
+  <section class="release" id="v0-30-0">
+    <div class="rel-head"><span class="ver">v0.30.0</span><h2>Menu baru: Input Pemeriksaan CKG Sekolah</h2></div>
+
+    <div class="block">
+      <h3>Alurnya</h3>
+      <ol class="steps">
+        <li><span>Buka menu <b>Input Pemeriksaan</b> di panel. Chrome menampilkan jendela izin untuk <code>form.kemkes.go.id</code> (halaman formulir pemeriksaan). Tekan <b>Izinkan</b>. Hanya diminta sekali.</span></li>
+        <li><span><b>Rekam Formulir</b> pada satu peserta untuk membuat template Excel, atau pakai template yang sudah ada.</span></li>
+        <li><span>Isi hasil pemeriksaan di template (Nomor Tiket, NIK, atau nama peserta + jawaban tiap layanan), lalu unggah.</span></li>
+        <li><span>Pilih <b>Sekolah</b>, <b>Kelas</b>, dan <b>Tanggal Pemeriksaan</b> di panel, lalu tekan <b>Jalankan</b>.</span></li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <h3>Yang dikerjakan ekstensi untuk tiap peserta</h3>
+      <ul>
+        <li>Mencari peserta di tab <em>Belum Dilayani</em> dan <em>Sedang Dilayani</em>, mencocokkan identitasnya, lalu menekan Mulai dan Mulai Pemeriksaan.</li>
+        <li>Mengisi formulir tiap layanan, menekan <b>Kirim</b>, kembali ke daftar layanan, lalu <b>Selesaikan Layanan</b> dan konfirmasi.</li>
+        <li>Kembali ke daftar peserta dan lanjut ke peserta berikutnya. Jeda sekitar 2,5 detik per langkah supaya situs sempat memuat.</li>
+        <li>Peserta yang tidak ditemukan dilewati dan dicatat; pertanyaan yang tidak ada di formulir peserta itu dilewati.</li>
+        <li>Bila halaman kosong, macet di "Memuat data..", atau muncul "Gagal memproses data", halaman dimuat ulang lalu proses dilanjutkan.</li>
+        <li>Bila dijeda atau terhenti, tekan <b>Lanjutkan</b> untuk meneruskan dari peserta terakhir. Pop-up muncul saat pengisian selesai.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>Perubahan lain</h3>
+      <ul>
+        <li>Bila panel tidak terhubung ke halaman CKG lebih dari beberapa detik, halaman CKG dimuat ulang otomatis.</li>
+        <li>Setelah ekstensi diperbarui, ikon menampilkan tanda <b>NEW</b> dan panel menampilkan ringkasan singkat yang baru.</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <strong>Data pemeriksaan tetap di komputer Anda</strong>
+      <p>Hasil pemeriksaan dari Excel hanya diisikan ke formulir Kemenkes. Tidak ada data peserta yang dikirim ke server pengembang. Bila izin <code>form.kemkes.go.id</code> tidak diberikan, menu lain tetap berjalan seperti biasa.</p>
+    </div>
+  </section>
+
+  <section class="release" id="v0-29-0">
+    <div class="rel-head"><span class="ver">v0.29.0</span><h2>Login dengan email pembelian</h2></div>
+    <div class="block">
+      <ul>
+        <li>Di kartu Lisensi, ketik email yang dipakai saat membeli. Kode 6 angka dikirim ke email itu (cek juga folder Spam), lalu ketik kodenya.</li>
+        <li>Satu langganan aktif di satu Chrome. Login di Chrome lain akan mengambil alih; Chrome sebelumnya keluar dengan sendirinya.</li>
+        <li>Tombol <b>Keluar</b> untuk melepas langganan dari Chrome ini.</li>
+        <li>Salah ketik email saat membeli? Hubungi admin agar email yang benar didaftarkan.</li>
+        <li>Kode lisensi lama tetap berlaku sampai masa berlakunya habis.</li>
+      </ul>
+    </div>
+  </section>
 
   <section class="release" id="v0-28-0">
     <div class="rel-head"><span class="ver">v0.28.0</span><h2>Copas langsung ke template</h2></div>
@@ -164,7 +216,7 @@ footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);paddin
     </div>
   </section>
 
-  <footer>Paket rilis: <code>ckg-sekolah-auto-input-v0.28.1.zip</code>. Semua pengujian memakai data tiruan.</footer>
+  <footer>Paket rilis terbaru: <code>ckg-sekolah-auto-input-v0.30.0.zip</code>. Kebijakan privasi: <a href="https://ckg-lisensi.vercel.app/privasi">ckg-lisensi.vercel.app/privasi</a>.</footer>
 </div>
 </body>
 </html>

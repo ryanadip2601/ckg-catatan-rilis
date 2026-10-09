@@ -4,6 +4,16 @@ Catatan perubahan ekstensi Chrome **CKG Sekolah Auto Input** untuk operator.
 
 Baca versi rapinya di: https://ryanadip2601.github.io/ckg-catatan-rilis/
 
+## v0.30.0 — Input Pemeriksaan CKG Sekolah
+- Menu baru **Input Pemeriksaan**: rekam formulir jadi template Excel, isi hasilnya, lalu ekstensi mencari peserta, mengisi tiap layanan, menekan Kirim, dan Selesaikan Layanan.
+- Pertama kali dibuka, Chrome meminta izin `form.kemkes.go.id` (halaman formulir pemeriksaan). Tekan Izinkan.
+- Sekolah, Kelas, dan Tanggal Pemeriksaan dipilih di panel. Peserta yang tidak ditemukan dilewati; bisa **Lanjutkan** setelah jeda.
+- Halaman CKG dimuat ulang otomatis bila macet atau panel tidak terhubung.
+
+## v0.29.0 — Login dengan email pembelian
+- Kode 6 angka dikirim ke email pembelian; satu langganan aktif di satu Chrome (login di Chrome lain mengambil alih).
+- Tombol Keluar. Kode lisensi lama tetap berlaku.
+
 ## v0.28.1 — Panel tidak lagi macet di "Halaman belum siap"
 - Bila sambungan ke halaman terputus, panel meminta refresh tab CKG (F5) dengan pesan yang jelas.
 - Tombol **Muat ulang ekstensi** (di bawah status) dan **Muat ulang** (di bawah panel): ekstensi dimuat ulang lalu tab CKG di-refresh otomatis. Ditolak saat proses sedang berjalan.
