@@ -1,6 +1,6 @@
-# Catatan Rilis — CKG Sekolah Auto Input
+# Catatan Rilis — CKG Auto Input Anti Macet
 
-Catatan perubahan ekstensi Chrome **CKG Sekolah Auto Input** untuk operator.
+Catatan perubahan ekstensi Chrome **CKG Auto Input Anti Macet** untuk operator.
 
 Baca versi rapinya di: https://ryanadip2601.github.io/ckg-catatan-rilis/
 
